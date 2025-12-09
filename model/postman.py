@@ -1,8 +1,8 @@
 from tkinter import Tk, filedialog,  messagebox
 from tkinter.scrolledtext import ScrolledText
 import tkinter as tk
-from directory_reader import directory_reader as dr
-from sender import WA_sender, email_sender
+from model.directory_reader import directory_reader as dr
+from model.sender import WA_sender, email_sender
 
 
 

@@ -1,2 +1,4 @@
-test/*
 __pycache__/*
+test/*
+view/__pycache__/*
+model/__pycache__/*

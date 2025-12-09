@@ -1,5 +1,5 @@
 from tkinter import Tk, Radiobutton, Frame, Label, Entry, Button, scrolledtext
-from tkinter_root import root
+from view.tkinter_root import root
 
 # class GUI_class(Frame):
 
@@ -28,4 +28,10 @@ class welcome_gui(Frame):
 
 
 if __name__== '__main__':
-    pass
+    container = Frame(height="800", width="800")
+    container.pack(fill="both", expand=True)
+    container.pack_propagate(False)
+    
+    test = welcome_gui(container, Tk)
+    test.pack(fill="both", expand=False)
+    container.mainloop()

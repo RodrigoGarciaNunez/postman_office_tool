@@ -1,9 +1,9 @@
 from tkinter import Tk, Frame
 
-import sys
-sys.path.append('../model')
+#import sys
+#sys.path.append('../model')
 
-from postman import postman
+from model.postman import postman
 
 class root(Tk):
     def __init__(self):
@@ -22,8 +22,8 @@ class root(Tk):
 
 
     def pack_frames(self):
-        from welcome_gui import welcome_gui
-        from read_directory_gui import read_directory_gui
+        from view.welcome_gui import welcome_gui
+        from view.read_directory_gui import read_directory_gui
 
 
         self.screens["welcome"] = welcome_gui(self.container, self)
@@ -43,4 +43,6 @@ class root(Tk):
 
 
 if __name__ == "__main__":
-    pass
+    root_ = root()
+    root_.pack_frames()
+    root_.mainloop()
