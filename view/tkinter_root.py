@@ -1,5 +1,4 @@
 from tkinter import Tk, Frame
-
 #import sys
 #sys.path.append('../model')
 

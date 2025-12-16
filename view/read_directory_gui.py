@@ -1,4 +1,4 @@
-from tkinter import Frame, Entry, Label, Button, scrolledtext, Tk
+from tkinter import Frame, Entry, Label, Button, scrolledtext, Tk, END
 
 #import typing
 
@@ -26,10 +26,12 @@ class read_directory_gui(Frame):
         btn_carpeta.grid(row=0, column=5, padx=5, pady=5, sticky="nsew")
 
         # Botón de buscar
-        btn_buscar = Button(self, text="Leer", command=lambda : context.postman_.leer_directorio(entry_file_dir,directory_text))
-        btn_buscar.grid(row=1, column=6, pady=10, sticky="nsew")
+        btn_buscar = Button(self, text="Leer Directorio", command=lambda : context.postman_.leer_directorio(entry_file_dir,directory_text))
+        btn_buscar.grid(row=1, column=3, pady=10, sticky="nsew")
 
-
+        Label(self, text="Mensaje:", bg="skyblue").grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+        entry_msg = Entry(self, width=40)
+        entry_msg.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
         
         frame_directory = Frame(self, bg="lightgray", height=50)
         frame_directory.grid(row=2, column=0, columnspan=7)
@@ -38,6 +40,10 @@ class read_directory_gui(Frame):
         Label(frame_directory, text= "Directorio").grid(row=0, column= 0, padx=5, pady=5)
         directory_text = scrolledtext.ScrolledText(frame_directory, width=60, height=30)
         directory_text.grid(row=1, column=0, padx=10, pady=10, sticky="nsew" )
+        
+        directory_text.insert(END, f"FORMATO DE DIRECTORIO\n")
+        directory_text.insert(END, f"ID | NOMBRE | TELEFONO | EMAIL\n")
+        directory_text.insert(END, f"XX | KBKNML | 12334556 | SDDS@\n")
 
         btn_send =  Button(self, text="Enviar", command= lambda : context.postman_.send())
         btn_send.grid(row = 3, column= 5, padx=10, pady= 10, sticky="nsew")
@@ -50,7 +56,7 @@ class read_directory_gui(Frame):
 
 
 if __name__ == "__main__":
-    container = Frame(height="600", width="800")
+    container = Frame(height="800", width="800")
     container.pack(fill="both", expand=True)
     container.pack_propagate(False)
     test = read_directory_gui(container, Tk)

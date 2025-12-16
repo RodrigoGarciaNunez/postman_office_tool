@@ -26,6 +26,7 @@ class postman():
 
 
     def leer_directorio(self, entry_file, directory_text):
+        
         file_name =  entry_file.get()
     
         if not file_name:
@@ -34,8 +35,13 @@ class postman():
         
         reader.leer_directorio(file_name)
 
-        for destinatario in reader.direcoty.items():
-            directory_text.insert(tk.END, f"{destinatario}\n")
+        if len(reader.direcoty) > 1:
+            directory_text.delete('1.0', tk.END)
+            for destinatario in reader.direcoty.items():
+                directory_text.insert(tk.END, f"{destinatario}\n")
+            return
+
+        messagebox.showwarning("Error", "DIRECTORIO NO VALIDO")
         #fcf.file_check_method(root, finder_)
 
     def send(self):
