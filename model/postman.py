@@ -9,7 +9,11 @@ from model.sender import WA_sender, email_sender
 class postman():
 
     def __init__(self):
-        pass
+        self.reader = dr()
+        self.directorio = dict()
+        self.message = str()
+        self.file = str()
+
 
     def seleccionar_file(self, entry_dir):
         file =  filedialog.askopenfilename()
@@ -33,28 +37,29 @@ class postman():
             messagebox.showwarning("Error", "Por favor ingresa carpeta y palabra.")
             return
         
-        reader.leer_directorio(file_name)
+        self.reader.leer_directorio(file_name)
 
-        if len(reader.direcoty) > 1:
+        if len(self.reader.direcoty) > 1:
             directory_text.delete('1.0', tk.END)
-            for destinatario in reader.direcoty.items():
+            for destinatario in self.reader.direcoty.items():
                 directory_text.insert(tk.END, f"{destinatario}\n")
+            
             return
 
         messagebox.showwarning("Error", "DIRECTORIO NO VALIDO")
         #fcf.file_check_method(root, finder_)
 
-    def send(self):
-        sender_ = WA_sender()
-        sender_.send_Message(dict_)
-        sender_ = email_sender()
-        sender_.send_Message(dict_, "Prueba", "")
+    def send(self, message):
+        sender_ = WA_sender(self.reader.direcoty,message,self.file)
+        sender_.send_Message()
+        #sender_ = email_sender()
+        #sender_.send_Message(dict_, "Prueba", "")
 
 
 if __name__ == '__main__':
 
-    dict_ = dict()
-    reader = dr(dict_)
+    #dict_ = dict()
+    reader = dr()
     root =  Tk()
     root.geometry("1000x600")
     root.title("Cartero")

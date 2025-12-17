@@ -20,45 +20,23 @@ import time
 
 class sender:
 
-    def __init__(self):
-        #self.direcoty = directory
+    def __init__(self, directory:dict, message:str):
 
-        #driver_path = ChromeDriverManager(version="141.0.7390.108").install()
+        self.dir = directory
+        self.mensaje = message
 
         options = Options()
         options.binary_location = "/usr/bin/brave-browser"
         options.add_argument("--start-maximized")
 
-        # service = Service("/usr/bin/chromedriver")
-        # driver = webdriver.Chrome(service=service, options=options)
-
-        
-
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager(driver_version="143.0.7499.110").install()), options=options)
 
-        self.mensaje = "Hola"
+        
 
         self.file = os.path.abspath(
             os.path.join(os.path.dirname(__file__), "../test_resourses", "mc.jpg"))
 
         print(self.file)
-
-        
-        # self.driver.get("https://web.whatsapp.com")
-
-        # try:
-        #     WebDriverWait(self.driver, 300).until(
-        #         EC.presence_of_element_located((By.CSS_SELECTOR, "div[role='grid']")))
-        #     print("✅ Sesión iniciada correctamente.")
-        # except:
-        #     print("⏰ Tiempo de espera agotado. No se detectó el inicio de sesión.")
-        #     self.driver.quit()
-        #     exit()
-
-        #print(self.driver.title)
-
-        #driver.quit()
-
 
 
     def send_Message():
@@ -68,8 +46,8 @@ class sender:
 
 class WA_sender(sender):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, directory:dict, message:str, file:str):
+        super().__init__(directory, message, file)
 
         self.driver.get("https://web.whatsapp.com")
 
@@ -83,33 +61,60 @@ class WA_sender(sender):
             exit()
 
 
-    def send_Message(self, directory:dict):
+    def send_Message(self, message:str, file:str):
         #mensaje = "Hola!"
         
-        for contacto in directory:
+        for contacto in self.dir:
+            self.find_contact(contacto)
+            self.add_message(contacto)
+            self.add_file()
+        
+        # cierra sesión
+        self.driver.quit()
 
-            #contacto = "Diego Núñez"
-            
-            search_box = WebDriverWait(self.driver, 30).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='3']")))
-            
-            search_box.click()
-            search_box.send_keys(directory[contacto][1])
-            #search_box.send_keys("Yo")
-            time.sleep(2)
-            search_box.send_keys(Keys.ENTER)
 
-            # añade archivo
+    
+    def find_contact(self, contacto):
+        
+        search_box = WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='3']")))
+            
+        search_box.click()
+        search_box.send_keys(self.dir[contacto][1])
+        time.sleep(2)
+        search_box.send_keys(Keys.ENTER)
+
+
+
+    def add_message(self, contacto):
+
+        if self.mensaje == "":
+            return
+        
+        msg_box = WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='10'][role='textbox']")))
+            
+        msg_box.click()
+        msg_box.send_keys(self.mensaje)
+        msg_box.send_keys(Keys.ENTER)
+
+        print(f"✅ Mensaje enviado a {contacto}: {dir[contacto][1]}.")
+        time.sleep(3)
+
+    def add_file(self):
+        
+        if self.file == "":
+            return
 
             # 1️⃣ Abrir el botón del clip
-            clip_btn = WebDriverWait(self.driver, 30).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-icon='clip']" )))
+        clip_btn = WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-icon='plus-rounded']" )))
     
-            clip_btn.click()
+        clip_btn.click()
 
             # 2️⃣ Localizar el input file
 
-            file_input = WebDriverWait(self.driver, 30).until(
+        file_input = WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
 
             # file_input = wait.until(EC.presence_of_element_located(
@@ -117,33 +122,17 @@ class WA_sender(sender):
             # ))
 
             # 3️⃣ Enviar la ruta del archivo (ABSOLUTA)
-            file_input.send_keys(self.file)
+        file_input.send_keys(self.file)
 
             # 4️⃣ Esperar botón de enviar y hacer click
 
-            send_btn = WebDriverWait(self.driver, 30).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-icon='send']" )))
+        send_btn = WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-icon='wds-ic-send-filled']" )))
 
             # send_btn = wait.until(EC.element_to_be_clickable(
             #     (By.CSS_SELECTOR, "span[data-icon='send']")
             # ))
-            send_btn.click()
-
-            msg_box = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='10']")))
-            
-            msg_box.click()
-            msg_box.send_keys(self.mensaje)
-            msg_box.send_keys(Keys.ENTER)
-
-            print(f"✅ Mensaje enviado a {contacto}: {directory[contacto][1]}.")
-            time.sleep(3)
-
-        
-        # cierra sesión
-        
-
-        self.driver.quit()
+        send_btn.click()
 
 
 class email_sender(sender):
@@ -171,10 +160,14 @@ class email_sender(sender):
 
 
 if __name__ == "__main__":
+    test_dir= {"HAlo123":[]}
+    for i in range(0,3):
+        inp =  input(f"Ingresa dato de prueba: 1: Nombre, 2: Telefono, 3: EMAIL:\n")
+        test_dir["HAlo123"].append(inp)
 
-    test_dir= {"HAlo123":["Rodrigo", "5545125300", "X"]}
-    test = WA_sender()
-    test.send_Message(test_dir)
+    print(test_dir)
+    test = WA_sender(test_dir, "Prueba")
+    test.send_Message()
 
     test = email_sender()
     test.send_Message()

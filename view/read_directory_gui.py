@@ -20,9 +20,9 @@ class read_directory_gui(Frame):
 
         # Etiqueta y entrada para carpeta
         Label(self, text="Archivo:", bg="skyblue").grid(row=0, column=3, padx=5, pady=5, sticky="nsew")
-        entry_carpeta = Entry(self, width=20)
-        entry_carpeta.grid(row=0, column=4, padx=5, pady=5, sticky="nsew")
-        btn_carpeta = Button(self, text="Seleccionar", command= lambda: context.postman_.seleccionar_directorio(entry_carpeta))
+        entry_file = Entry(self, width=20)
+        entry_file.grid(row=0, column=4, padx=5, pady=5, sticky="nsew")
+        btn_carpeta = Button(self, text="Seleccionar", command= lambda: context.postman_.seleccionar_file(entry_file))
         btn_carpeta.grid(row=0, column=5, padx=5, pady=5, sticky="nsew")
 
         # Botón de buscar
@@ -45,7 +45,7 @@ class read_directory_gui(Frame):
         directory_text.insert(END, f"ID | NOMBRE | TELEFONO | EMAIL\n")
         directory_text.insert(END, f"XX | KBKNML | 12334556 | SDDS@\n")
 
-        btn_send =  Button(self, text="Enviar", command= lambda : context.postman_.send())
+        btn_send =  Button(self, text="Enviar", command= lambda : context.postman_.send(entry_msg))
         btn_send.grid(row = 3, column= 5, padx=10, pady= 10, sticky="nsew")
 
         for i in range(0, 8):
